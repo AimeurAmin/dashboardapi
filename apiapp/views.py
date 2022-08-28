@@ -1,59 +1,34 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
+from rest_framework import viewsets
+from .models import Comment, Domain, User, UserAnswer, Question, Answer, City
+from .serializers import CommentSerializer, DomainSerializer, UserSerializer, UserAnswerSerializer, QuestionSerializer, AnswerSerializer, CitySerializer
 
-from .models import Comment
-from .serializers import CommentSerializer
+class Commentapi(viewsets.ModelViewSet):
+  queryset=Comment.objects.all()
+  serializer_class=CommentSerializer
 
+class Domainapi(viewsets.ModelViewSet):
+  queryset=Domain.objects.all()
+  serializer_class=DomainSerializer
 
-class CommentListView(
-  APIView, 
-  UpdateModelMixin, 
-  DestroyModelMixin, 
-):
-
-  # GET COMMENT / COMMENTS
-  def get(self, request, id=None):
-    if id:
-      try:
-        queryset = Comment.objects.get(id=id)
-      except Comment.DoesNotExist:
-        return Response({'errors': 'This comment item does not exist.'}, status=400)
-      read_serializer = CommentSerializer(queryset)
-    else:
-      queryset = Comment.objects.all()
-      read_serializer = CommentSerializer(queryset, many=True)
-
-    return Response(read_serializer.data)
-
-  # POST / PUT COMMENT
-  def post(self, request):
-    create_serializer = CommentSerializer(data=request.data)
-
-    if create_serializer.is_valid():      
-      comment_item_object = create_serializer.save()
-      read_serializer = CommentSerializer(comment_item_object)
-
-      return Response(read_serializer.data, status=201)
-
-    return Response(create_serializer.errors, status=400)
+class Userapi(viewsets.ModelViewSet):
+  queryset=User.objects.all()
+  serializer_class=UserSerializer
 
 
-class AnswersListView(
-  APIView, 
-  UpdateModelMixin, 
-  DestroyModelMixin, 
-):
+class UserAnswerapi(viewsets.ModelViewSet):
+  queryset=UserAnswer.objects.all()
+  serializer_class=UserAnswerSerializer
 
-  def get(self, request, id=None):
-    if id:
-      try:
-        queryset = Answer.objects.get(id=id)
-      except Answer.DoesNotExist:
-        return Response({'errors': 'This comment item does not exist.'}, status=400)
-      read_serializer = CommentSerializer(queryset)
-    else:
-      queryset = Comment.objects.all()
-      read_serializer = CommentSerializer(queryset, many=True)
 
-    return Response(read_serializer.data)
+class Questionapi(viewsets.ModelViewSet):
+  queryset=Question.objects.all()
+  serializer_class=QuestionSerializer
+
+
+class Answerapi(viewsets.ModelViewSet):
+  queryset=Answer.objects.all()
+  serializer_class=AnswerSerializer
+
+class Cityapi(viewsets.ModelViewSet):
+  queryset=City.objects.all()
+  serializer_class=CitySerializer

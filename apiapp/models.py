@@ -54,6 +54,7 @@ class User(models.Model):
 
   city = models.ForeignKey(
     City, 
+    related_name='users',
     on_delete=models.CASCADE
   )
 
@@ -99,7 +100,7 @@ class Comment(models.Model):
   )
 
   user = models.ForeignKey(
-    User, 
+    User,
     on_delete=models.CASCADE
   )
 
@@ -146,6 +147,7 @@ class Answer(models.Model):
 
   question = models.ForeignKey(
     Question,
+    related_name='answers',
     on_delete=models.CASCADE
   )
 

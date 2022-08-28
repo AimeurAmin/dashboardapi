@@ -1,32 +1,40 @@
 from rest_framework import serializers
-
-from .models import Comment, Domain
-
-
-class DomainSerializer(serializers.ModelSerializer):
-    class Meta:
-      model = Domain
-      fields = ('id', 'domain_name')
-
+from .models import Comment,Domain,User,City,Question,Answer,UserAnswer
 
 class CommentSerializer(serializers.ModelSerializer):
-  # comment = serializers.CharField(max_length=500, required=True)
-  domain = DomainSerializer()
-
-  def create(self, validated_data):
-    return Comment.objects.create(
-      comment=validated_data.get('comment')
-    )
-
-  def update(self, instance, validated_data):
-    instance.comment = validated_data.get('comment', instance.comment)
-    instance.save()
-    return instance
-
   class Meta:
-    model = Comment
-    fields = (
-      'id',
-      'comment',
-      'domain'
-    )
+    model=Comment
+    fields="__all__"
+
+class DomainSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Domain
+    fields="__all__"
+
+class UserSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=User
+    fields="__all__"
+
+
+class CitySerializer(serializers.ModelSerializer):
+  users=UserSerializer(read_only=True,many=True)
+  class Meta:
+    model=City
+    fields="__all__"
+
+class AnswerSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Answer
+    fields="__all__"
+
+class QuestionSerializer(serializers.ModelSerializer):
+  answers=AnswerSerializer(read_only=True,many=True)
+  class Meta:
+    model=Question
+    fields="__all__"
+
+class UserAnswerSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=UserAnswer
+    fields="__all__"

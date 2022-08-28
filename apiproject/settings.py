@@ -86,8 +86,8 @@ DATABASES = {
     'default': {  
         'ENGINE': 'django.db.backends.mysql',  
         'NAME': 'dashboardOoredoo',  
-        'USER': 'amin',  
-        'PASSWORD': 'password',  
+        'USER': 'root',  
+        'PASSWORD': '499123',  
         'HOST': '127.0.0.1',  
         'PORT': '3306',  
         'OPTIONS': {  
